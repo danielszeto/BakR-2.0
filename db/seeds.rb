@@ -22,18 +22,28 @@ if Rails.env.development?
     end
   end
 
-  demo_password = "BakrDemo-Local26"
-  User.find_or_create_by!(email: "buyer@bakr.example") do |buyer|
-    buyer.assign_attributes(first_name: "Demo Buyer", location: "Amsterdam", password: demo_password)
-  end
+  if ENV["BAKR_DEMO_ACCOUNTS"] == "1"
+    accounts = [
+      { email: "buyer@bakr.example", first_name: "Demo Buyer" },
+      { email: "baker@bakr.example", first_name: "Demo Baker", contact_email: "orders@bakr.example" }
+    ]
 
-  baker = User.find_or_create_by!(email: "baker@bakr.example") do |user|
-    user.assign_attributes(first_name: "Demo Baker", location: "Amsterdam", password: demo_password,
-      contact_email: "orders@bakr.example", bio: "Try managing your listings on this demo profile.")
-  end
+    credentials = User.transaction do
+      accounts.map do |attributes|
+        user = User.find_or_initialize_by(email: attributes.fetch(:email))
+        user.assign_attributes(attributes.merge(location: "Amsterdam")) if user.new_record?
+        password = SecureRandom.urlsafe_base64(24)
+        user.update!(password: password)
+        [user.email, password]
+      end
+    end
 
-  baker.products.find_or_create_by!(title: "Saturday cinnamon rolls") do |product|
-    product.assign_attributes(category: "regular", price_cents: 1400,
-      description: "Four soft cinnamon rolls finished with a vanilla glaze. Saturday pickup.")
+    baker = User.find_by!(email: "baker@bakr.example")
+    baker.products.find_or_create_by!(title: "Saturday cinnamon rolls") do |product|
+      product.assign_attributes(category: "regular", price_cents: 1400,
+        description: "Four soft cinnamon rolls finished with a vanilla glaze. Saturday pickup.")
+    end
+
+    credentials.each { |email, password| puts "#{email}: #{password}" }
   end
 end

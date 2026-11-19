@@ -13,14 +13,13 @@ bin/rails db:seed
 bin/rails server
 ```
 
-Open [localhost:3000](http://localhost:3000), then choose **Sign in**. The development seed creates sample listings and these accounts:
+Open [localhost:3000](http://localhost:3000). To create or reset local demo accounts, run:
 
-| Try this | Email | Password |
-| --- | --- | --- |
-| Browse and contact a baker | `buyer@bakr.example` | `BakrDemo-Local26` |
-| Post and manage listings | `baker@bakr.example` | `BakrDemo-Local26` |
+```sh
+BAKR_DEMO_ACCOUNTS=1 bin/rails db:seed
+```
 
-The demo baker owns **Saturday cinnamon rolls**. Sign in as the buyer and open that listing to try the **Email baker** button. The contact address is a placeholder. Production seeds omit the demo accounts and listings.
+This prints a newly generated password for each account in your terminal. Sign in as `buyer@bakr.example` to try the contact button on **Saturday cinnamon rolls**, or as `baker@bakr.example` to manage the listing. The contact address is a placeholder.
 
 ## Enable Google sign-in
 
