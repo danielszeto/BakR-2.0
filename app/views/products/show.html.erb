@@ -1,0 +1,32 @@
+<% content_for :title, @product.title %>
+<%= link_to "← Explore baked goods", products_path, class: "back-link" %>
+<article class="detail">
+  <% if @product.product_url.present? %>
+    <%= image_tag @product.product_url, alt: @product.title, class: "detail-photo", referrerpolicy: "no-referrer" %>
+  <% else %>
+    <div class="detail-photo placeholder" aria-hidden="true">BakR.</div>
+  <% end %>
+  <div class="detail-copy">
+    <span class="tag"><%= Product::CATEGORIES.fetch(@product.category) %></span>
+    <h1><%= @product.title %></h1>
+    <p class="detail-price"><%= listing_price(@product) %></p>
+    <p>By <%= link_to @product.user.first_name, @product.user %> · <%= @product.user.location %></p>
+    <div class="description"><%= simple_format(@product.description) %></div>
+
+    <% if current_user == @product.user %>
+      <div class="actions">
+        <%= link_to "Edit listing", edit_product_path(@product), class: "button" %>
+      </div>
+      <% unless @product.available? %><p>This listing is paused.</p><% end %>
+    <% elsif !@product.available? %>
+      <p>This listing is currently unavailable.</p>
+    <% elsif @product.user.contact_email.blank? %>
+      <p>This baker hasn’t enabled email contact for their listings.</p>
+    <% elsif current_user %>
+      <%= mail_to @product.user.contact_email, "Email baker", class: "button" %>
+      <p class="hint">Arrange pickup, payment, and any ingredient questions directly with the baker.</p>
+    <% else %>
+      <%= link_to "Sign in to contact baker", sign_in_path(return_to: product_path(@product)), class: "button" %>
+    <% end %>
+  </div>
+</article>

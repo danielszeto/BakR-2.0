@@ -1,0 +1,17 @@
+<article class="card" id="<%= dom_id(product) %>">
+  <%= link_to product, class: "card-link" do %>
+    <% if product.product_url.present? %>
+      <%= image_tag product.product_url, alt: "", loading: "lazy", class: "card-photo", referrerpolicy: "no-referrer" %>
+    <% else %>
+      <div class="card-photo placeholder" aria-hidden="true">BakR.</div>
+    <% end %>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="tag"><%= Product::CATEGORIES.fetch(product.category) %></span>
+        <span class="price"><%= listing_price(product) %></span>
+      </div>
+      <h3><%= product.title %></h3>
+      <p><%= product.user.first_name %> · <%= product.user.location %><%= " · Paused" unless product.available? %></p>
+    </div>
+  <% end %>
+</article>

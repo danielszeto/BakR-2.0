@@ -1,0 +1,8 @@
+<% content_for :title, "Post a listing" %>
+<div class="form-panel">
+  <h1>Post a listing</h1>
+  <% if current_user.contact_email.blank? %>
+    <p>Add a <%= link_to "contact email to your profile", edit_user_path(current_user) %> so buyers can get in touch.</p>
+  <% end %>
+  <%= render "form", product: @product %>
+</div>

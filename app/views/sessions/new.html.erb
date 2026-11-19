@@ -1,0 +1,17 @@
+<% content_for :title, "Sign in" %>
+<div class="form-panel">
+  <h1>Sign in</h1>
+  <p>New to BakR? <%= link_to "Create an account", new_user_path %>.</p>
+  <%= form_with url: sessions_path, scope: :user, class: "edit-form" do |form| %>
+    <%= hidden_field_tag :return_to, @return_to if @return_to %>
+    <div class="field">
+      <%= form.label :email %>
+      <%= form.email_field :email, value: @email, required: true, autocomplete: "email" %>
+    </div>
+    <div class="field">
+      <%= form.label :password %>
+      <%= form.password_field :password, required: true, autocomplete: "current-password" %>
+    </div>
+    <%= form.submit "Sign in", class: "button" %>
+  <% end %>
+</div>

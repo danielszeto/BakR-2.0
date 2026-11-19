@@ -1,0 +1,27 @@
+<%= render "shared/errors", record: product %>
+<%= form_with model: product, class: "edit-form" do |form| %>
+  <div class="field">
+    <%= form.label :title, "Listing title" %>
+    <%= form.text_field :title, required: true, maxlength: 100, placeholder: "Brown butter chocolate cookies" %>
+  </div>
+  <div class="form-row">
+    <div class="field">
+      <%= form.label :category, "Dietary category" %>
+      <%= form.select :category, Product::CATEGORIES.invert.to_a %>
+    </div>
+    <div class="field">
+      <%= form.label :price, "Price (USD)" %>
+      <%= form.text_field :price, inputmode: "decimal", required: true, placeholder: "12.00" %>
+    </div>
+  </div>
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description, rows: 5, required: true, maxlength: 1500, placeholder: "What’s in it, how much comes per order, and when it’s ready for pickup" %>
+  </div>
+  <div class="field">
+    <%= form.label :product_url, "Photo link (optional)" %>
+    <%= form.text_field :product_url, inputmode: "url", maxlength: 1000, placeholder: "https://…" %>
+  </div>
+  <label class="checkbox"><%= form.check_box :available %> Available to order</label>
+  <%= form.submit product.persisted? ? "Save listing" : "Post listing", class: "button" %>
+<% end %>

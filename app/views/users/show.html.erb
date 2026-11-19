@@ -1,0 +1,24 @@
+<% content_for :title, @user.first_name %>
+<section class="profile">
+  <div>
+    <h1><%= [@user.first_name, @user.last_name].compact_blank.join(" ") %></h1>
+    <p><%= @user.location %></p>
+    <div class="description"><%= simple_format(@user.bio) %></div>
+  </div>
+  <% if current_user == @user %>
+    <div class="actions">
+      <%= link_to "Edit profile", edit_user_path(@user), class: "button secondary" %>
+      <%= link_to "Post a listing", new_product_path, class: "button" %>
+    </div>
+  <% end %>
+</section>
+<section class="market">
+  <div class="market-heading">
+    <h2><%= current_user == @user ? "Your listings" : "Listings" %></h2>
+  </div>
+  <% if @products.any? %>
+    <div class="listing-grid"><%= render @products %></div>
+  <% else %>
+    <div class="empty"><p>No listings to show.</p></div>
+  <% end %>
+</section>

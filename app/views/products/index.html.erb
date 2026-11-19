@@ -1,0 +1,38 @@
+<% homepage = request.path == root_path %>
+<% if homepage %>
+  <section class="hero">
+    <div class="hero-copy">
+      <h1>Baked close<br>to home<span>.</span></h1>
+      <p>Discover small-batch treats from home bakers in your neighborhood.</p>
+      <%= link_to "Browse baked goods", "#listings", class: "button" %>
+    </div>
+    <%= image_tag "/images/image1.jpg", alt: "A kitchen table with ingredients ready for a batch of cookies", class: "hero-photo", fetchpriority: "high" %>
+  </section>
+<% else %>
+  <% content_for :title, "Explore baked goods" %>
+<% end %>
+
+<section id="listings" class="market">
+  <div class="market-heading">
+    <%= content_tag(homepage ? :h2 : :h1, "Explore baked goods") %>
+    <p><%= pluralize(@products.size, "listing") %></p>
+  </div>
+  <nav aria-label="Dietary filters" class="filters">
+    <%= link_to "All bakes", products_path, aria: { current: ("page" unless @category) } %>
+    <% Product::CATEGORIES.each do |value, label| %>
+      <%= link_to label, products_path(type: value), aria: { current: ("page" if @category == value) } %>
+    <% end %>
+  </nav>
+  <% if @products.any? %>
+    <div class="listing-grid"><%= render @products %></div>
+  <% else %>
+    <div class="empty">
+      <h3>No listings <%= @category ? "in this category" : "yet" %></h3>
+      <% if @category %>
+        <%= link_to "See all bakes", products_path %>
+      <% else %>
+        <%= link_to "Post the first listing", new_product_path %>
+      <% end %>
+    </div>
+  <% end %>
+</section>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for?(:title) ? "#{yield(:title)} | BakR" : "BakR | Baked close to home" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag "bakr" %>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <%= link_to "BakR<span>.</span>".html_safe, root_path, class: "wordmark", aria: { label: "BakR home" } %>
+        <nav aria-label="Main" class="nav">
+          <%= link_to "Explore", products_path, class: "nav-explore" %>
+          <% if current_user %>
+            <%= link_to "My profile", current_user %>
+            <%= button_to "Log out", logout_path, method: :delete, class: "text-button" %>
+            <%= link_to "Post a listing", new_product_path, class: "button small" %>
+          <% else %>
+            <%= link_to "Sign in", sign_in_path %>
+            <%= link_to "Start selling", new_user_path, class: "button small" %>
+          <% end %>
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="shell main">
+      <% if notice %><p class="flash" role="status"><%= notice %></p><% end %>
+      <% if alert %><p class="flash alert" role="alert"><%= alert %></p><% end %>
+      <%= yield %>
+    </main>
+    <footer class="site-footer shell">
+      <%= link_to "BakR<span>.</span>".html_safe, root_path, class: "wordmark", aria: { label: "BakR home" } %>
+      <p>Home baking, closer to you.</p>
+    </footer>
+  </body>
+</html>
