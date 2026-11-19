@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: bakrhood
+    runtime: ruby
+    plan: free
+    region: frankfurt
+    buildCommand: bundle install && SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
+    startCommand: bundle exec rails db:prepare && bundle exec rails db:seed && bundle exec rails server -b 0.0.0.0
+    healthCheckPath: /up
+    domains:
+      - bakrhood.com
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: SECRET_KEY_BASE
+        generateValue: true
+      - key: BAKR_PREVIEW
+        value: "1"

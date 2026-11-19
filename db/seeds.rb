@@ -1,4 +1,4 @@
-if Rails.env.development?
+if Rails.env.development? || (Rails.env.production? && ENV["BAKR_PREVIEW"] == "1")
   [
     ["Alma’s Oven", "Sunset, San Francisco", "Brown butter chocolate cookies", "regular", 1200, "cookies",
       "Six chewy chocolate cookies with crisp edges, a little sea salt, and plenty of brown butter."],
@@ -21,29 +21,29 @@ if Rails.env.development?
         product_url: "/images/#{photo}.jpg")
     end
   end
+end
 
-  if ENV["BAKR_DEMO_ACCOUNTS"] == "1"
-    accounts = [
-      { email: "buyer@bakr.example", first_name: "Demo Buyer" },
-      { email: "baker@bakr.example", first_name: "Demo Baker", contact_email: "orders@bakr.example" }
-    ]
+if Rails.env.development? && ENV["BAKR_DEMO_ACCOUNTS"] == "1"
+  accounts = [
+    { email: "buyer@bakr.example", first_name: "Demo Buyer" },
+    { email: "baker@bakr.example", first_name: "Demo Baker", contact_email: "orders@bakr.example" }
+  ]
 
-    credentials = User.transaction do
-      accounts.map do |attributes|
-        user = User.find_or_initialize_by(email: attributes.fetch(:email))
-        user.assign_attributes(attributes.merge(location: "Amsterdam")) if user.new_record?
-        password = SecureRandom.urlsafe_base64(24)
-        user.update!(password: password)
-        [user.email, password]
-      end
+  credentials = User.transaction do
+    accounts.map do |attributes|
+      user = User.find_or_initialize_by(email: attributes.fetch(:email))
+      user.assign_attributes(attributes.merge(location: "Amsterdam")) if user.new_record?
+      password = SecureRandom.urlsafe_base64(24)
+      user.update!(password: password)
+      [user.email, password]
     end
-
-    baker = User.find_by!(email: "baker@bakr.example")
-    baker.products.find_or_create_by!(title: "Saturday cinnamon rolls") do |product|
-      product.assign_attributes(category: "regular", price_cents: 1400,
-        description: "Four soft cinnamon rolls finished with a vanilla glaze. Saturday pickup.")
-    end
-
-    credentials.each { |email, password| puts "#{email}: #{password}" }
   end
+
+  baker = User.find_by!(email: "baker@bakr.example")
+  baker.products.find_or_create_by!(title: "Saturday cinnamon rolls") do |product|
+    product.assign_attributes(category: "regular", price_cents: 1400,
+      description: "Four soft cinnamon rolls finished with a vanilla glaze. Saturday pickup.")
+  end
+
+  credentials.each { |email, password| puts "#{email}: #{password}" }
 end

@@ -39,6 +39,10 @@ Choose **Continue with Google** on the sign-in page or **Sign up with Google** o
 
 The MVP uses a fresh SQLite database. Legacy records need a separate migration. Checkout and payments are handled directly between buyer and seller.
 
+## Deploy the preview
+
+Deploy the repository with the [Render Blueprint](https://render.com/deploy?repo=https://github.com/danielszeto/BakR-2.0). It provisions a free Rails service, generates the Rails secret, and registers `bakrhood.com`. Render displays the target for your Cloudflare DNS records. The preview seeds sample listings and uses temporary SQLite storage, so accounts and listings created in the preview can reset when the service restarts. Local demo credentials are only generated in development.
+
 ## Verify
 
 ```sh
@@ -46,4 +50,4 @@ bin/rails test
 SECRET_KEY_BASE_DUMMY=1 RAILS_ENV=production bin/rails assets:precompile
 ```
 
-For an HTTPS deployment, set `RAILS_ENV=production` and `SECRET_KEY_BASE`, and put the SQLite database on a persistent volume using `BAKR_DATABASE_PATH`. Run `bin/rails db:prepare` and `bin/rails assets:precompile` before starting Puma. Development demo data is excluded from production seeds.
+For an HTTPS deployment, set `RAILS_ENV=production` and `SECRET_KEY_BASE`, and put the SQLite database on a persistent volume using `BAKR_DATABASE_PATH`. Run `bin/rails db:prepare` and `bin/rails assets:precompile` before starting Puma. Production seeds are empty unless the preview mode is enabled.
