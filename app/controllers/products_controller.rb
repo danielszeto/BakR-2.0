@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
   before_action :require_login, except: %i[index show]
+  before_action :require_listing_location, only: %i[new create]
   before_action :set_product, only: %i[show edit update destroy]
   before_action :require_owner, only: %i[edit update destroy]
 
@@ -42,6 +43,12 @@ class ProductsController < ApplicationController
   end
 
   private
+
+  def require_listing_location
+    return if current_user.location.present?
+
+    redirect_to edit_user_path(current_user), alert: "Add your city or neighborhood before posting a listing."
+  end
 
   def set_product
     @product = Product.find(params[:id])

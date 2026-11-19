@@ -1,0 +1,4 @@
+<% if Rails.configuration.x.google_sign_in %>
+  <%= button_to label, "/auth/google_oauth2", params: { return_to: local_assigns[:return_to] }.compact,
+        class: "button secondary", form: { class: "google-form" } %>
+<% end %>

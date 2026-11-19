@@ -4,7 +4,9 @@ class User < ApplicationRecord
 
   normalizes :email, :contact_email, with: ->(email) { email.strip.downcase }
 
-  validates :first_name, :location, presence: true, length: { maximum: 80 }
+  validates :first_name, presence: true, length: { maximum: 80 }
+  validates :location, length: { maximum: 80 }
+  validates :location, presence: true, unless: -> { new_record? && google_uid.present? }
   validates :last_name, length: { maximum: 80 }
   validates :bio, length: { maximum: 1000 }
   validates :email, presence: true, uniqueness: true

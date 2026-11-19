@@ -21,4 +21,19 @@ if Rails.env.development?
         product_url: "/images/#{photo}.jpg")
     end
   end
+
+  demo_password = "BakrDemo-Local26"
+  User.find_or_create_by!(email: "buyer@bakr.example") do |buyer|
+    buyer.assign_attributes(first_name: "Demo Buyer", location: "Amsterdam", password: demo_password)
+  end
+
+  baker = User.find_or_create_by!(email: "baker@bakr.example") do |user|
+    user.assign_attributes(first_name: "Demo Baker", location: "Amsterdam", password: demo_password,
+      contact_email: "orders@bakr.example", bio: "Try managing your listings on this demo profile.")
+  end
+
+  baker.products.find_or_create_by!(title: "Saturday cinnamon rolls") do |product|
+    product.assign_attributes(category: "regular", price_cents: 1400,
+      description: "Four soft cinnamon rolls finished with a vanilla glaze. Saturday pickup.")
+  end
 end

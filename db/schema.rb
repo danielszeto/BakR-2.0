@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_19_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_19_000100) do
   create_table "products", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "title", null: false
@@ -31,12 +31,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_19_000000) do
     t.string "last_name"
     t.string "email", null: false
     t.string "password_digest", null: false
-    t.string "location", null: false
+    t.string "location"
     t.string "contact_email"
     t.text "bio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "google_uid"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["google_uid"], name: "index_users_on_google_uid", unique: true
   end
 
   add_foreign_key "products", "users"

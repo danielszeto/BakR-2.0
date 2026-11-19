@@ -5,5 +5,7 @@ Rails.application.routes.draw do
   get "/sign_in", to: "sessions#new", as: :sign_in
   post "/sessions", to: "sessions#create"
   delete "/logout", to: "sessions#destroy", as: :logout
+  get "/auth/google_oauth2/callback", to: "sessions#google"
+  get "/auth/failure", to: "sessions#google_failure"
   get "/up", to: "rails/health#show"
 end

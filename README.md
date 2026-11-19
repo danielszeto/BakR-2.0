@@ -13,12 +13,27 @@ bin/rails db:seed
 bin/rails server
 ```
 
-Open [localhost:3000](http://localhost:3000). The seed adds four sample listings in development. Create your own two accounts to try listing a bake as a seller and contacting that seller as a buyer.
+Open [localhost:3000](http://localhost:3000), then choose **Sign in**. The development seed creates sample listings and these accounts:
+
+| Try this | Email | Password |
+| --- | --- | --- |
+| Browse and contact a baker | `buyer@bakr.example` | `BakrDemo-Local26` |
+| Post and manage listings | `baker@bakr.example` | `BakrDemo-Local26` |
+
+The demo baker owns **Saturday cinnamon rolls**. Sign in as the buyer and open that listing to try the **Email baker** button. The contact address is a placeholder. Production seeds omit the demo accounts and listings.
+
+## Enable Google sign-in
+
+1. [Create a Web application OAuth client in Google Cloud](https://console.cloud.google.com/auth/clients).
+2. Add `http://localhost:3000/auth/google_oauth2/callback` as an authorized redirect URI. For a hosted app, add the callback on its exact HTTPS origin.
+3. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in the Rails server environment. Set `GOOGLE_OAUTH_ORIGIN` to the app origin for production or when using a different local port, then restart Rails.
+
+Choose **Continue with Google** on the sign-in page or **Sign up with Google** on the registration page. To use Google with an existing BakR account, sign in with your password and choose **Connect Google** on your profile. Use the same email address for both accounts.
 
 ## What you can do
 
 - Browse available listings and filter by Classic, Vegan, Gluten-free, or Organic.
-- Create an account, sign in, and edit your baker profile.
+- Create an account, sign in with a password or Google, and edit your baker profile.
 - Post a listing with a USD price, dietary category, description, and optional HTTPS photo link.
 - Edit, pause, or delete your own listings.
 - Add an optional contact email so signed-in buyers can reach you to arrange pickup and payment.

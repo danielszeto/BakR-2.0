@@ -14,4 +14,5 @@
     </div>
     <%= form.submit "Sign in", class: "button" %>
   <% end %>
+  <%= render "shared/google_sign_in", label: "Continue with Google", return_to: @return_to %>
 </div>

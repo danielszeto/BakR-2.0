@@ -2,13 +2,16 @@
 <section class="profile">
   <div>
     <h1><%= [@user.first_name, @user.last_name].compact_blank.join(" ") %></h1>
-    <p><%= @user.location %></p>
+    <% if @user.location.present? %><p><%= @user.location %></p><% end %>
     <div class="description"><%= simple_format(@user.bio) %></div>
   </div>
   <% if current_user == @user %>
     <div class="actions">
       <%= link_to "Edit profile", edit_user_path(@user), class: "button secondary" %>
       <%= link_to "Post a listing", new_product_path, class: "button" %>
+      <% unless @user.google_uid.present? %>
+        <%= render "shared/google_sign_in", label: "Connect Google" %>
+      <% end %>
     </div>
   <% end %>
 </section>
